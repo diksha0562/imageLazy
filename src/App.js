@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import List from './components/List';
+import Grid from './components/Grid';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = (props) => {
+    const [elementPosArray, updateElementPosArray] = useState([]);
+
+    const onDropElement = ({x,y,key}) => {
+        const elementPosArrayCopy = elementPosArray.slice();
+        elementPosArrayCopy.push({x,y, key});
+        updateElementPosArray(elementPosArrayCopy);
+        console.log('elementPosArrayCopy',elementPosArrayCopy);
+    }
+
+    const updatePosElement = ({x,y,key}) => {
+      const elementPosArrayCopy = elementPosArray.map((element)=>{
+        if(element.key == key){
+          element.x = x;
+          element.y = y;
+        }
+        return element;
+      });
+      updateElementPosArray(elementPosArrayCopy);
+    }
+
+      
+    return(
+        <div style={{display:'flex'}}>
+          {console.log('elementPosArray',elementPosArray)}
+            <List onDropElement={onDropElement}/>
+            <Grid elementPosArray={elementPosArray} updatePosElement={updatePosElement}/>
+        </div>
+    )
 }
+
 
 export default App;
